@@ -40,7 +40,7 @@ export class HomePage {
       (reservationStuff) =>{
         this.reservationsArray= reservationStuff;
         this.filteredArray=this.reservationsArray.filter(x => x.approvedStatus === false || x.paidStatus === false);
-
+        
       }
     )
   }
