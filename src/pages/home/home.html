@@ -1,15 +1,28 @@
-<ion-header>
+<ion-header no-border>
   <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Reservation Requests</ion-title>
   </ion-navbar>
+<ion-toolbar>
+  <ion-segment [(ngModel)]="segment">
+      <ion-segment-button value="pending">
+        Pending
+      </ion-segment-button>
+      <ion-segment-button value="booked">
+        Booked
+      </ion-segment-button>
+    </ion-segment>
+</ion-toolbar>
+    
+
 </ion-header>
 
-<ion-content padding fullscreen="true">
-  <ion-card *ngFor="let reservation of filteredArray">
-    <ion-card-content>
+<ion-content padding fullscreen="true" [ngSwitch]="segment">
+  <div *ngFor="let reservation of filteredArray">
+  <ion-card *ngSwitchCase="reservation.approvedStatus? 'booked': 'pending'">    
+    <ion-card-content >
       <h2> <strong>Category :{{ reservation.category ==='badminton'? 'Badminton Court': 'Squash Court'}}</strong></h2>
       <hr>
       <h3>Name: {{ reservation.item }}</h3>
@@ -32,7 +45,8 @@
             <button ion-button small color="secondary" block (click)="onPaid(reservation.key)">Paid</button>          
         </ion-col>
       </ion-row>
-      
     </ion-card-content>
   </ion-card>
+  </div>
+
 </ion-content>

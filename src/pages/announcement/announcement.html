@@ -15,12 +15,24 @@
   <form #f="ngForm" (ngSubmit)="onSubmit(f)">
     <ion-list>
       <ion-item>
-        <ion-label floating>Short Announcement</ion-label>
-        <ion-input ngModel type="text" name="announcement"></ion-input>
+        <ion-label floating>Title</ion-label>
+        <ion-input ngModel type="text" name="title"></ion-input>
       </ion-item>
+
+      <ion-item>
+          <ion-label floating>Description</ion-label>
+          <ion-input ngModel type="text" name="description"></ion-input>
+        </ion-item>
     </ion-list>
 
     <button type="submit" ion-button color="primary" block outline>Post</button>
   </form>
+  <br><br>
+  <ion-list>
+    <p style="padding-left: 13px;">Announcements</p>
+    <ion-item *ngFor="let announcement of announcementsArray.reverse()" (swipe)="onSwipe(announcement.key)">
+        <ion-badge item-left>{{ announcement.date }}</ion-badge>{{ announcement.title }}
+    </ion-item>
+  </ion-list>
 
 </ion-content>

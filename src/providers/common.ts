@@ -18,9 +18,10 @@ export class CommonProvider {
     
   }
 
-  login(){
-    
-    
+  loadingSpinner(msg: string){
+    return this.loadingCtrl.create({
+      content: msg
+    })
   }
 
   setUser(uid: string, userEmail: string){
@@ -34,13 +35,6 @@ export class CommonProvider {
 
   getUserEmail(){
     return this.userEmail;
-  }
-
-  loadingFeature(msg: string){
-    return this.loading=this.loadingCtrl.create({
-      content: msg
-    })
-  
   }
 
 

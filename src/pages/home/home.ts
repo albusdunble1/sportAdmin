@@ -1,3 +1,4 @@
+import { CommonProvider } from './../../providers/common';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
@@ -16,11 +17,16 @@ export class HomePage {
   reservationAfterChecking;
   index:string;
   courtName:string;
+  loading;
 
 
-  constructor(public navCtrl: NavController, private afDB: AngularFireDatabase) {
+  segment: string;
 
 
+
+  constructor(public navCtrl: NavController, private afDB: AngularFireDatabase, private common: CommonProvider) {
+
+    this.segment="pending";
     
 
     this.reservationRef$= this.afDB.list('reservation');
@@ -40,6 +46,7 @@ export class HomePage {
       (reservationStuff) =>{
         this.reservationsArray= reservationStuff;
         this.filteredArray=this.reservationsArray.filter(x => x.approvedStatus === false || x.paidStatus === false);
+        this.loading.dismiss();
         
       }
     )
@@ -83,10 +90,17 @@ export class HomePage {
  
   }
 
+  ionViewDidLoad(){
+    this.loading=this.common.loadingSpinner('Loading');
+    this.loading.present();
+  }
+
   onReject(key: string){
     console.log('rejected');
     this.afDB.object('/reservation/'+ key).remove();
   }
+
+
 
   onPaid(key :string){
     console.log('Paid');
