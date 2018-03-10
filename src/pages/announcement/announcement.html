@@ -1,0 +1,26 @@
+
+<ion-header>
+
+  <ion-navbar color="primary">
+      <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+    <ion-title>Announcement</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Short Announcement</ion-label>
+        <ion-input ngModel type="text" name="announcement"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <button type="submit" ion-button color="primary" block outline>Post</button>
+  </form>
+
+</ion-content>

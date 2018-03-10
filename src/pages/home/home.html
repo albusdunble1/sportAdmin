@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Reservation Requests</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding fullscreen="true">
+  <ion-card *ngFor="let reservation of filteredArray">
+    <ion-card-content>
+      <h2> <strong>Category :{{ reservation.category ==='badminton'? 'Badminton Court': 'Squash Court'}}</strong></h2>
+      <hr>
+      <h3>Name: {{ reservation.item }}</h3>
+      <p>Date : {{ reservation.date}}</p>
+      <p>Time : {{ reservation.time}}</p>
+      <ion-item>
+        <ion-note item-right>By : {{ reservation.matricsNo | uppercase}}</ion-note>
+      </ion-item>
+      <ion-row *ngIf="!reservation.approvedStatus">
+        <ion-col col-6>
+        <button ion-button small color="primary" block (click)="onApprove(reservation.key, reservation.reservationKey, reservation.time, reservation.date,reservation.item, reservation.category)">Approve</button>
+      </ion-col>
+      <ion-col col-6>
+          <button ion-button small color="danger" block (click)="onReject(reservation.key)">Reject</button>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="reservation.approvedStatus">
+        <ion-col>
+            <button ion-button small color="secondary" block (click)="onPaid(reservation.key)">Paid</button>          
+        </ion-col>
+      </ion-row>
+      
+    </ion-card-content>
+  </ion-card>
+</ion-content>
