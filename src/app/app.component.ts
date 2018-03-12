@@ -26,6 +26,7 @@ export class MyApp {
       if(user){
         this.nav.setRoot(HomePage);
         this.common.setUser(user.uid,user.email);
+        this.common.toastPop('Welcome, Admin', 'bottom').present();
       }else{
         this.nav.setRoot(SigninPage);
       }
@@ -63,5 +64,6 @@ export class MyApp {
   onLogout(){
     this.afAuth.auth.signOut();
     this.nav.setRoot(SigninPage);
+    this.common.toastPop('Successfully logged out.', 'bottom').present();
   }
 }

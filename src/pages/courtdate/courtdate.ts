@@ -3,7 +3,7 @@ import { CourtlistPage } from './../courtlist/courtlist';
 import { AngularFireDatabase } from 'angularfire2/database';
 import moment from 'moment';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
@@ -16,7 +16,7 @@ import { CommonProvider } from '../../providers/common';
   selector: 'page-court-date',
   templateUrl: 'courtdate.html',
 })
-export class CourtDatePage implements OnInit{
+export class CourtDatePage implements OnInit, OnDestroy{
   timeForm: FormGroup;
   myDate= new Date().toString();
   reservation$;
@@ -40,16 +40,21 @@ export class CourtDatePage implements OnInit{
 
   userId: string;
   matricsNo: string;
-  minDate: string = new Date().toISOString();
+  minDate: string ;
+  dateMin = moment();
   dateMax = moment();
   maxDate:string;
 
+  categorySub: Subscription;
+  reservationSub: Subscription;
 
  
 
   reservationTimes =["1pm-2pm", "2pm-3pm", "3pm-4pm", "4pm-5pm", "5pm-6pm"];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private afDB: AngularFireDatabase, private common: CommonProvider) {
+    this.dateMin.subtract(3, 'years');
+    this.minDate= this.dateMin.toDate().toISOString();
     this.dateMax.add(1, 'months'); // get max date that user can book
     this.maxDate= this.dateMax.toDate().toISOString();
 
@@ -71,7 +76,7 @@ export class CourtDatePage implements OnInit{
     );
 
     //extracting all the data from the observable and putting it in local array to be used
-       this.category$.subscribe(
+       this.categorySub=this.category$.subscribe(
         (data) => {
           // this.itemArray = data;
           this.categoryArray=data;
@@ -93,7 +98,7 @@ export class CourtDatePage implements OnInit{
     );
 
     //extracting all the data from the observable and putting it in local array to be used
-    this.reservation$.subscribe(
+    this.reservationSub=this.reservation$.subscribe(
       (data) => {
         // this.itemArray = data;
         this.reservationArray=data;
@@ -229,6 +234,11 @@ export class CourtDatePage implements OnInit{
 
     
 
+  }
+
+  ngOnDestroy(){
+    this.reservationSub.unsubscribe();
+    this.categorySub.unsubscribe();
   }
 }
 

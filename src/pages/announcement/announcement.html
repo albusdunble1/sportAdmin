@@ -21,18 +21,34 @@
 
       <ion-item>
           <ion-label floating>Description</ion-label>
-          <ion-input ngModel type="text" name="description"></ion-input>
+          <ion-textarea ngModel type="text" name="description"></ion-textarea>
         </ion-item>
     </ion-list>
 
     <button type="submit" ion-button color="primary" block outline>Post</button>
   </form>
   <br><br>
+  
+
+
+
+  <p style="padding-left: 13px;">Announcements</p>
   <ion-list>
-    <p style="padding-left: 13px;">Announcements</p>
-    <ion-item *ngFor="let announcement of announcementsArray.reverse()" (swipe)="onSwipe(announcement.key)">
-        <ion-badge item-left>{{ announcement.date }}</ion-badge>{{ announcement.title }}
+    <ion-item-sliding *ngFor="let announcement of announcementsArray.reverse()">
+    <ion-item >
+    <ion-badge item-left>{{ announcement.date }}</ion-badge>{{ announcement.title }}
     </ion-item>
+
+    <ion-item-options side="right">
+        <button ion-button icon-only (click)="onEditAnnouncement(announcement)" color="secondary">
+            <ion-icon name="create"></ion-icon>
+          </button>
+      <button ion-button icon-only (click)="onRemoveAnnouncement(announcement.key)" color="danger" style="padding-right: 2px; padding-left:2px;">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-item-options>
+  </ion-item-sliding>
   </ion-list>
+  
 
 </ion-content>

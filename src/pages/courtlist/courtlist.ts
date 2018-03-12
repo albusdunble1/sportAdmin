@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 
@@ -8,7 +8,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
   selector: 'page-courtlist',
   templateUrl: 'courtlist.html',
 })
-export class CourtlistPage {
+export class CourtlistPage{
 
   courtType: string;
  
@@ -111,5 +111,4 @@ export class CourtlistPage {
     }
   }
 
-  
 }

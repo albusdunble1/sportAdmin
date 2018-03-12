@@ -20,12 +20,13 @@
 </ion-header>
 
 <ion-content padding fullscreen="true" [ngSwitch]="segment">
-  <div *ngFor="let reservation of filteredArray">
+  <div *ngFor="let reservation of filteredArray.reverse()">
   <ion-card *ngSwitchCase="reservation.approvedStatus? 'booked': 'pending'">    
     <ion-card-content >
-      <h2> <strong>Category :{{ reservation.category ==='badminton'? 'Badminton Court': 'Squash Court'}}</strong></h2>
+      <h2> <strong>Reservation ID: #{{ reservation.reservationID }}</strong></h2>
       <hr>
-      <h3>Name: {{ reservation.item }}</h3>
+      <p>Category :{{ reservation.category ==='badminton'? 'Badminton Court': 'Squash Court'}}</p>
+      <p>Name: {{ reservation.item }}</p>
       <p>Date : {{ reservation.date}}</p>
       <p>Time : {{ reservation.time}}</p>
       <ion-item>
@@ -33,16 +34,16 @@
       </ion-item>
       <ion-row *ngIf="!reservation.approvedStatus">
         <ion-col col-6>
-        <button ion-button small color="primary" block (click)="onApprove(reservation.key, reservation.reservationKey, reservation.time, reservation.date,reservation.item, reservation.category)">Approve</button>
+        <button ion-button small color="primary" block (click)="onApprove(reservation.key, reservation.reservationKey, reservation.time, reservation.date,reservation.item, reservation.category, reservation.reservationID)">Approve</button>
       </ion-col>
       <ion-col col-6>
-          <button ion-button small color="danger" block (click)="onReject(reservation.key)">Reject</button>
+          <button ion-button small color="danger" block (click)="onReject(reservation.key, reservation.reservationID)">Reject</button>
         </ion-col>
       </ion-row>
 
       <ion-row *ngIf="reservation.approvedStatus">
         <ion-col>
-            <button ion-button small color="secondary" block (click)="onPaid(reservation.key)">Paid</button>          
+            <button ion-button small color="secondary" block (click)="onPaid(reservation.key, reservation.reservationID)">Paid</button>          
         </ion-col>
       </ion-row>
     </ion-card-content>

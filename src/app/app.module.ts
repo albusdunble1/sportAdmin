@@ -1,3 +1,4 @@
+import { EditAnnouncementPage } from './../pages/edit-announcement/edit-announcement';
 import { AnnouncementPage } from './../pages/announcement/announcement';
 import { CourtDatePage } from './../pages/courtdate/courtdate';
 import { CommonProvider } from './../providers/common';
@@ -33,7 +34,8 @@ export const firebaseConfig = {
     SigninPage,
     CourtDatePage,
     CourtlistPage,
-    AnnouncementPage
+    AnnouncementPage,
+    EditAnnouncementPage
   ],
   imports: [
     BrowserModule,
@@ -49,7 +51,8 @@ export const firebaseConfig = {
     SigninPage,
     CourtDatePage,
     CourtlistPage,
-    AnnouncementPage
+    AnnouncementPage,
+    EditAnnouncementPage
   ],
   providers: [
     StatusBar,

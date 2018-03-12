@@ -1,13 +1,14 @@
+import { Subscription } from 'rxjs/Subscription';
 import { CommonProvider } from './../../providers/common';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage {
+export class HomePage implements OnDestroy{
 
   reservationRef$;
   reservationObservable;
@@ -21,6 +22,7 @@ export class HomePage {
 
 
   segment: string;
+  reservationSub: Subscription;
 
 
 
@@ -42,7 +44,7 @@ export class HomePage {
       }
     )
 
-    this.reservationObservable.subscribe(
+    this.reservationSub=this.reservationObservable.subscribe(
       (reservationStuff) =>{
         this.reservationsArray= reservationStuff;
         this.filteredArray=this.reservationsArray.filter(x => x.approvedStatus === false || x.paidStatus === false);
@@ -52,7 +54,7 @@ export class HomePage {
     )
   }
 
-  onApprove(key: string, reservationKey:string, time:string, date:string, item:string, category:string){
+  onApprove(key: string, reservationKey:string, time:string, date:string, item:string, category:string, reservationID: number){
     if(category==='badminton'){
       this.index= '0';
       if(item==='Badminton Court 1'){
@@ -86,6 +88,7 @@ export class HomePage {
     }
     this.afDB.object('/reservation/'+ key).update({approvedStatus: true});
     this.afDB.object('/reservationTimes/'+ time+'/'+date+'/'+reservationKey+'/category/'+this.index+'/courts/'+ this.courtName).update({isBooked: true});
+    this.common.toastPop('Approved request #'+ reservationID,'bottom').present();
 
  
   }
@@ -95,16 +98,22 @@ export class HomePage {
     this.loading.present();
   }
 
-  onReject(key: string){
+  onReject(key: string, reservationID: number){
     console.log('rejected');
     this.afDB.object('/reservation/'+ key).remove();
+    this.common.toastPop('Rejected request #'+ reservationID,'bottom').present();
   }
 
 
 
-  onPaid(key :string){
+  onPaid(key :string, reservationID: string){
     console.log('Paid');
     this.afDB.object('/reservation/'+ key).update({paidStatus: true});
+    this.common.toastPop('#'+reservationID + ' has paid','bottom').present();
+  }
+
+  ngOnDestroy(){
+    this.reservationSub.unsubscribe();
   }
 
 }

@@ -1,0 +1,27 @@
+
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Edit Announcement</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+ 
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Title</ion-label>
+        <ion-input [(ngModel)]="aTitle" type="text" name="title"></ion-input>
+      </ion-item>
+
+      <ion-item>
+          <ion-label floating>Description</ion-label>
+          <ion-textarea [(ngModel)]="aDescrip" type="text" name="description"></ion-textarea>
+        </ion-item>
+    </ion-list>
+
+    <button type="button" ion-button color="primary" block outline (click)="onEdit()">Edit</button>
+  
+</ion-content>
