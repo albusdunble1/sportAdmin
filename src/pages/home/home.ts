@@ -78,12 +78,6 @@ export class HomePage implements OnDestroy{
         this.courtName='scourt2';
       }else if(item ==='Squash Court 3'){
         this.courtName='scourt3';
-      }else if(item ==='Squash Court 4'){
-        this.courtName='scourt4';
-      }else if(item ==='Squash Court 5'){
-        this.courtName='scourt5';
-      }else if(item ==='Squash Court 6'){
-        this.courtName='scourt6';
       }
     }
     this.afDB.object('/reservation/'+ key).update({approvedStatus: true});
