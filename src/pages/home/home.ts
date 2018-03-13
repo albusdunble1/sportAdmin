@@ -69,15 +69,46 @@ export class HomePage implements OnDestroy{
         this.courtName='bcourt5';
       }else if(item ==='Badminton Court 6'){
         this.courtName='bcourt6';
+      }else if(item ==='Badminton Court 7'){
+        this.courtName='bcourt7';
+      }else if(item ==='Badminton Court 8'){
+        this.courtName='bcourt8';
+      }else if(item ==='Badminton Court 9'){
+        this.courtName='bcourt9';
+      }else if(item ==='Badminton Court 10'){
+        this.courtName='bcourt9a';
+      }else if(item ==='Badminton Court 11'){
+        this.courtName='bcourt9b';
+      }else if(item ==='Badminton Court 12'){
+        this.courtName='bcourt9c';
       }
     }else if(category ==='squash'){
-      this.index='1';
+      this.index='3';
       if(item==='Squash Court 1'){
         this.courtName='scourt1';
       }else if(item ==='Squash Court 2'){
         this.courtName='scourt2';
-      }else if(item ==='Squash Court 3'){
-        this.courtName='scourt3';
+      }
+    }else if(category ==='takraw'){
+      this.index='4';
+      if(item==='Sepak Takraw Court 1'){
+        this.courtName='stcourt1';
+      }else if(item ==='Sepak Takraw Court 2'){
+        this.courtName='stcourt2';
+      }else if(item ==='Sepak Takraw Court 3'){
+        this.courtName='stcourt3';
+      }else if(item ==='Sepak Takraw Court 4'){
+        this.courtName='stcourt4';
+      }
+    }else if(category ==='basketball'){
+      this.index='1';
+      if(item==='Basketball Court 1'){
+        this.courtName='bbcourt1';
+      }
+    }else if(category ==='football'){
+      this.index='2';
+      if(item==='Football Field'){
+        this.courtName='ffield';
       }
     }
     this.afDB.object('/reservation/'+ key).update({approvedStatus: true});
