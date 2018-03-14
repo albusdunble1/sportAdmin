@@ -1,0 +1,37 @@
+
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title text-center>Reservation #{{ reservationDetails.reservationID }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  
+
+      <h5 style="padding-top:15px;">Reserved by: {{ reservationDetails.userName }} ({{ reservationDetails.matricsNo | uppercase }}) </h5>
+      <hr>
+      <h6>Category: {{ reservationDetails.category | titlecase }}</h6>
+      <p>Name: {{ reservationDetails.item }}</p>
+      <p>Date: {{ reservationDetails.date }}</p>
+      <p>Time: {{ reservationDetails.time }}</p>
+      <p>Fees: RM {{ reservationDetails.fee }}</p>
+
+
+      <ion-badge *ngIf="reservationDetails.approvedStatus" block>Approved</ion-badge>
+      <ion-badge color="danger" *ngIf="!reservationDetails.approvedStatus" block>Not Approved</ion-badge>
+
+        <ion-badge *ngIf="reservationDetails.paidStatus" block>Paid</ion-badge>
+        <ion-badge *ngIf="!reservationDetails.paidStatus" color="danger" block>Not Paid</ion-badge>        
+
+      
+
+<div>
+    <br>
+</div>
+<br>
+
+  <button outline block color="danger" ion-button (click)="onDismiss()">Back</button>
+</ion-content>

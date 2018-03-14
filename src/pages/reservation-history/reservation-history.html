@@ -1,0 +1,39 @@
+
+<ion-header>
+
+  <ion-navbar color="primary">
+
+      <button ion-button menuToggle *ngIf="!searchClicked">
+          <ion-icon name="menu"></ion-icon>
+        </button>
+      <ion-buttons end>
+        <button ion-button icon-only (click)="toggleSearch()">
+            <ion-icon name="search" right></ion-icon>
+        </button>
+      </ion-buttons>
+        
+    <ion-title *ngIf="!searchClicked">Reservation History</ion-title>
+
+    <ion-searchbar *ngIf="searchClicked"
+      [(ngModel)]="searchedId"
+      [showCancelButton]="true"
+      (ionInput)="onInput($event)"
+      (ionCancel)="onCancel($event)"
+      placeholder="Filter by ID"
+      >
+    </ion-searchbar>
+  </ion-navbar>
+  
+
+</ion-header>
+
+
+<ion-content padding fullscreen="true" (click)="bodyListener()">
+<ion-item>
+  <h2><strong>List of Reservations</strong></h2>
+</ion-item>
+  <ion-list>
+      <ion-item *ngFor="let reservation of filteredArray.reverse(); let i=index;" (click)="onViewDetails(reservation)" #indivReservation><span class="circles">{{i+1}}</span> Reservation <span style="color:teal; font-weight: bold;">#{{ reservation.reservationID }}</span></ion-item>
+  </ion-list>
+
+</ion-content>

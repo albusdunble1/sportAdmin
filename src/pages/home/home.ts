@@ -137,6 +137,19 @@ export class HomePage implements OnDestroy{
     this.common.toastPop('#'+reservationID + ' has paid','bottom').present();
   }
 
+  // onInput(event){
+  //   if(this.searchedId !== ''){
+  //     this.filteredArray= this.allReservation.filter(x=> 
+  //       x.reservationID.toString().substring(0,this.searchedId.length)=== this.searchedId);
+  //   }else{
+  //     this.filteredArray= this.allReservation;
+  //   }
+  // }
+
+  // onCancel(){
+
+  // }
+
   ngOnDestroy(){
     this.reservationSub.unsubscribe();
   }

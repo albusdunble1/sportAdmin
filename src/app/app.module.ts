@@ -1,3 +1,4 @@
+import { DetailsModalPage } from './../pages/details-modal/details-modal';
 import { EditAnnouncementPage } from './../pages/edit-announcement/edit-announcement';
 import { AnnouncementPage } from './../pages/announcement/announcement';
 import { CourtDatePage } from './../pages/courtdate/courtdate';
@@ -17,6 +18,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { CourtlistPage } from '../pages/courtlist/courtlist';
+import { ReservationHistoryPage } from '../pages/reservation-history/reservation-history';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyAqEwyw1GntJd1F3yVftTlDCUQdRKlXGfQ",
@@ -35,7 +37,9 @@ export const firebaseConfig = {
     CourtDatePage,
     CourtlistPage,
     AnnouncementPage,
-    EditAnnouncementPage
+    EditAnnouncementPage,
+    ReservationHistoryPage,
+    DetailsModalPage
   ],
   imports: [
     BrowserModule,
@@ -52,7 +56,9 @@ export const firebaseConfig = {
     CourtDatePage,
     CourtlistPage,
     AnnouncementPage,
-    EditAnnouncementPage
+    EditAnnouncementPage,
+    ReservationHistoryPage,
+    DetailsModalPage
   ],
   providers: [
     StatusBar,

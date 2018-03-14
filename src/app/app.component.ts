@@ -8,6 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { HomePage } from '../pages/home/home';
+import { ReservationHistoryPage } from '../pages/reservation-history/reservation-history';
 
 
 @Component({
@@ -40,7 +41,8 @@ export class MyApp {
     this.pages = [
       { title: 'Reservation Requests', component: HomePage },
       { title: 'View Courts', component: CourtDatePage },
-      { title: 'Post Announcement', component: AnnouncementPage }  
+      { title: 'Post Announcement', component: AnnouncementPage },  
+      { title: 'Reservation History', component: ReservationHistoryPage }  
       
     ];
 

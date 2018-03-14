@@ -1,0 +1,13 @@
+page-reservation-history {
+    .circles{
+        margin-right: 10px;
+   content: counter(item);
+   background: #2b8c85;
+   border-radius: 100%;
+   color: white;
+   width: 1.3em;
+   text-align: center;
+   display: inline-block;
+    }
+
+}
