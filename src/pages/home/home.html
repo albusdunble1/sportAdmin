@@ -31,7 +31,7 @@
       <p>Time : {{ reservation.time}}</p>
       <p>Fees : RM: {{ reservation.fee}}</p>
       <ion-item>
-        <ion-note item-right>By : {{ reservation.matricsNo | uppercase}}</ion-note>
+        <ion-note item-right>By : {{ reservation.userName }} ( {{ reservation.matricsNo | uppercase}} )</ion-note>
       </ion-item>
       <ion-row *ngIf="!reservation.approvedStatus">
         <ion-col col-6>
