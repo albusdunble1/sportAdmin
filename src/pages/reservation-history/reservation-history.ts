@@ -74,6 +74,8 @@ export class ReservationHistoryPage {
 
   bodyListener(){
     this.searchClicked=false;
+    this.filteredArray= this.allReservation;
+    this.searchedId='';
   }
 
 
