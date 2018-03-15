@@ -1,6 +1,7 @@
+import { Subscription } from 'rxjs/Subscription';
 import { DetailsModalPage } from './../details-modal/details-modal';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 
 
@@ -10,16 +11,16 @@ import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angu
   selector: 'page-reservation-history',
   templateUrl: 'reservation-history.html',
 })
-export class ReservationHistoryPage {
+export class ReservationHistoryPage implements OnDestroy{
   
   allReservation= [];
   searchedId: string;
   filteredArray=[];
-  searchClicked= false;
+  reservationSub:Subscription;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private afDB: AngularFireDatabase, private modalCtrl: ModalController) {
 
-    this.afDB.list('/reservation').snapshotChanges()
+    this.reservationSub=this.afDB.list('/reservation').snapshotChanges()
     .map(
       (changes) => {
         return changes.map(
@@ -31,7 +32,6 @@ export class ReservationHistoryPage {
       }
     ).subscribe(
       (reservationStuff) => {
-        console.log(reservationStuff);
         this.allReservation= reservationStuff;
         this.filteredArray= this.allReservation;
       } 
@@ -40,12 +40,7 @@ export class ReservationHistoryPage {
   }
 
   onViewDetails(reservation){
-    this.modalCtrl.create(DetailsModalPage,reservation).present().then(
-      ()=> {
-        this.filteredArray= this.allReservation;
-    this.searchedId='';
-      }
-    );
+    this.modalCtrl.create(DetailsModalPage,reservation).present();
     
   }
 
@@ -61,21 +56,16 @@ export class ReservationHistoryPage {
   }
 
   onCancel(event){
-    this.searchClicked=false;
-    this.filteredArray= this.allReservation;
-    this.searchedId='';
+
   }
 
-  toggleSearch(){
-    this.searchClicked= !this.searchClicked;
-    this.filteredArray= this.allReservation;
-    this.searchedId='';
-  }
 
   bodyListener(){
-    this.searchClicked=false;
-    this.filteredArray= this.allReservation;
-    this.searchedId='';
+
+  }
+
+  ngOnDestroy(){
+    this.reservationSub.unsubscribe();
   }
 
 

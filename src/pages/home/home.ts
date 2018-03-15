@@ -19,10 +19,12 @@ export class HomePage implements OnDestroy{
   index:string;
   courtName:string;
   loading;
+  searchedId:string;
 
 
   segment: string;
   reservationSub: Subscription;
+
 
 
 
@@ -137,14 +139,16 @@ export class HomePage implements OnDestroy{
     this.common.toastPop('#'+reservationID + ' has paid','bottom').present();
   }
 
-  // onInput(event){
-  //   if(this.searchedId !== ''){
-  //     this.filteredArray= this.allReservation.filter(x=> 
-  //       x.reservationID.toString().substring(0,this.searchedId.length)=== this.searchedId);
-  //   }else{
-  //     this.filteredArray= this.allReservation;
-  //   }
-  // }
+  onInput(event){
+    if(this.searchedId !== ''){
+      // this.filteredArray= this.allReservation.filter(x=> x.reservationID.toString().startsWith(this.searchedId) !== -1);
+      this.filteredArray= this.reservationsArray.filter(x=> 
+        x.reservationID.toString().substring(0,this.searchedId.length)=== this.searchedId);
+    }else{
+      this.filteredArray= this.reservationsArray;
+    }
+  
+  }
 
   // onCancel(){
 

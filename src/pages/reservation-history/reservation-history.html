@@ -3,25 +3,16 @@
 
   <ion-navbar color="primary">
 
-      <button ion-button menuToggle *ngIf="!searchClicked">
+      <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
         </button>
-      <ion-buttons end>
+      <!-- <ion-buttons end>
         <button ion-button icon-only (click)="toggleSearch()">
             <ion-icon name="search" right></ion-icon>
         </button>
-      </ion-buttons>
+      </ion-buttons> -->
         
-    <ion-title *ngIf="!searchClicked">Reservation History</ion-title>
-
-    <ion-searchbar *ngIf="searchClicked"
-      [(ngModel)]="searchedId"
-      [showCancelButton]="true"
-      (ionInput)="onInput($event)"
-      (ionCancel)="onCancel($event)"
-      placeholder="Filter by ID"
-      >
-    </ion-searchbar>
+    <ion-title>Reservation History</ion-title>
   </ion-navbar>
   
 
@@ -29,6 +20,14 @@
 
 
 <ion-content padding fullscreen="true" (click)="bodyListener()">
+    <ion-searchbar
+    [(ngModel)]="searchedId"
+    [showCancelButton]="true"
+    (ionInput)="onInput($event)"
+    (ionCancel)="onCancel($event)"
+    placeholder="Filter by ID"
+    >
+  </ion-searchbar>
 <ion-item>
   <h2><strong>List of Reservations</strong></h2>
 </ion-item>

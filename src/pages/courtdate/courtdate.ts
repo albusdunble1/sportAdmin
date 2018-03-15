@@ -17,6 +17,7 @@ import { CommonProvider } from '../../providers/common';
   templateUrl: 'courtdate.html',
 })
 export class CourtDatePage implements OnInit, OnDestroy{
+  
   timeForm: FormGroup;
   myDate= new Date().toString();
   reservation$;
@@ -47,7 +48,7 @@ export class CourtDatePage implements OnInit, OnDestroy{
 
   categorySub: Subscription;
   reservationSub: Subscription;
-
+  reservationTimeSub: Subscription;
  
 
   reservationTimes =["1pm-2pm", "2pm-3pm", "3pm-4pm", "4pm-5pm", "5pm-6pm"];
@@ -136,7 +137,7 @@ export class CourtDatePage implements OnInit, OnDestroy{
       }
     )
         // passing the reservation data fetched to a local array
-          this.reservationAfterChecking.subscribe( // causing an infinite loop out of nowhere
+          this.reservationTimeSub=this.reservationAfterChecking.subscribe( // causing an infinite loop out of nowhere
             (data) => {
               this.RCArray= data;
               console.log(this.RCArray);
@@ -237,8 +238,14 @@ export class CourtDatePage implements OnInit, OnDestroy{
   }
 
   ngOnDestroy(){
-    this.reservationSub.unsubscribe();
+    if(this.reservationTimeSub){
+      this.reservationTimeSub.unsubscribe();
+      this.querySubscription.unsubscribe();
+    }
     this.categorySub.unsubscribe();
+    this.reservationSub.unsubscribe();
+    
   }
-}
+  }
+
 
