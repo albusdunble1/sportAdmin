@@ -150,9 +150,9 @@ export class HomePage implements OnDestroy{
   
   }
 
-  // onCancel(){
+  onCancel(){
 
-  // }
+  }
 
   ngOnDestroy(){
     this.reservationSub.unsubscribe();
