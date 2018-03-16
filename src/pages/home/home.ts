@@ -24,7 +24,11 @@ export class HomePage implements OnDestroy{
 
   segment: string;
   reservationSub: Subscription;
-
+  adminID: string;
+  adminName:string;
+  adminEmail:string;
+  adminSub: Subscription;
+  adminObject;
 
 
 
@@ -32,6 +36,21 @@ export class HomePage implements OnDestroy{
 
     this.segment="pending";
     
+    this.adminID=this.common.getUser();
+    this.adminEmail= this.common.getUserEmail();
+    console.log(this.adminID);
+    let content = {
+      email: this.adminEmail
+    }
+    this.afDB.object('/admins/'+ this.adminID).update(content);
+
+    this.adminSub=this.afDB.object('/admins/'+ this.adminID).valueChanges()
+  .subscribe(
+    (adminName) => {
+      this.adminObject= adminName;
+      console.log(this.adminObject.name);
+    }
+  )
 
     this.reservationRef$= this.afDB.list('reservation');
     this.reservationObservable = this.reservationRef$.snapshotChanges()
@@ -113,7 +132,9 @@ export class HomePage implements OnDestroy{
         this.courtName='ffield';
       }
     }
-    this.afDB.object('/reservation/'+ key).update({approvedStatus: true});
+
+
+    this.afDB.object('/reservation/'+ key).update({approvedStatus: true, approvedBy: this.adminObject.name});
     this.afDB.object('/reservationTimes/'+ time+'/'+date+'/'+reservationKey+'/category/'+this.index+'/courts/'+ this.courtName).update({isBooked: true});
     this.common.toastPop('Approved request #'+ reservationID,'bottom').present();
 
@@ -135,7 +156,7 @@ export class HomePage implements OnDestroy{
 
   onPaid(key :string, reservationID: string){
     console.log('Paid');
-    this.afDB.object('/reservation/'+ key).update({paidStatus: true});
+    this.afDB.object('/reservation/'+ key).update({paidStatus: true, payreceivedBy:this.adminObject.name});
     this.common.toastPop('#'+reservationID + ' has paid','bottom').present();
   }
 
@@ -156,6 +177,7 @@ export class HomePage implements OnDestroy{
 
   ngOnDestroy(){
     this.reservationSub.unsubscribe();
+    this.adminSub.unsubscribe();
   }
 
 }

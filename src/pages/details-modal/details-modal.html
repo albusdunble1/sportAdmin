@@ -18,6 +18,8 @@
       <p>Date: {{ reservationDetails.date }}</p>
       <p>Time: {{ reservationDetails.time }}</p>
       <p>Fees: RM {{ reservationDetails.fee }}</p>
+      <p *ngIf="reservationDetails.approvedBy"><strong>Approved by: {{ reservationDetails.approvedBy }}</strong></p>
+      <p *ngIf="reservationDetails.payreceivedBy"><strong>Payment received: {{ reservationDetails.payreceivedBy }}</strong></p>
 
 
       <ion-badge *ngIf="reservationDetails.approvedStatus" block>Approved</ion-badge>

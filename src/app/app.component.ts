@@ -1,3 +1,5 @@
+import { AngularFireDatabase } from 'angularfire2/database';
+import { Subscription } from 'rxjs/Subscription';
 import { AnnouncementPage } from './../pages/announcement/announcement';
 import { CourtDatePage } from './../pages/courtdate/courtdate';
 import { CommonProvider } from './../providers/common';
@@ -16,18 +18,29 @@ import { ReservationHistoryPage } from '../pages/reservation-history/reservation
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-
+  adminSub: Subscription;
+  adminID: string;
+  adminObject;
 
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,private afAuth: AngularFireAuth, private common: CommonProvider) {
+  constructor(private afDB:AngularFireDatabase,public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,private afAuth: AngularFireAuth, private common: CommonProvider) {
+    this.initializeApp();
+    
     this.afAuth.authState.subscribe(
       (user) => {
       if(user){
+        this.adminSub=this.afDB.object('/admins/'+ user.uid).valueChanges()
+        .subscribe(
+          (adminName) => {
+            this.adminObject= adminName;
+            this.common.toastPop('Welcome, '+ this.adminObject.name, 'bottom').present();
+          }
+        )
         this.nav.setRoot(HomePage);
         this.common.setUser(user.uid,user.email);
-        this.common.toastPop('Welcome, Admin', 'bottom').present();
+        
       }else{
         this.nav.setRoot(SigninPage);
       }
@@ -35,7 +48,7 @@ export class MyApp {
       }
     )
 
-    this.initializeApp();
+
 
     // used for an example of ngFor and navigation
     this.pages = [
@@ -64,8 +77,10 @@ export class MyApp {
   }
 
   onLogout(){
+    this.adminSub.unsubscribe();
     this.afAuth.auth.signOut();
     this.nav.setRoot(SigninPage);
     this.common.toastPop('Successfully logged out.', 'bottom').present();
+    
   }
 }
