@@ -17,6 +17,8 @@ export class HomePage implements OnDestroy{
   reservationObservable;
   reservationsArray =[];
   filteredArray=[];
+  filteredArray1=[];
+  filteredArray2=[];
   reservationTimeRef$;
   reservationAfterChecking;
   index:string;
@@ -72,6 +74,7 @@ export class HomePage implements OnDestroy{
       (reservationStuff) =>{
         this.reservationsArray= reservationStuff;
         this.filteredArray=this.reservationsArray.filter(x => x.approvedStatus === false || x.paidStatus === false);
+        this.filteredArray2=this.filteredArray;
         this.loading.dismiss();
         
       }
@@ -140,6 +143,7 @@ export class HomePage implements OnDestroy{
     this.afDB.object('/reservation/'+ key).update({approvedStatus: true, approvedBy: this.adminObject.name});
     this.afDB.object('/reservationTimes/'+ time+'/'+date+'/'+reservationKey+'/category/'+this.index+'/courts/'+ this.courtName).update({isBooked: true});
     this.common.toastPop('Approved request #'+ reservationID,'bottom').present();
+    this.searchedId='';
 
  
   }
@@ -161,15 +165,16 @@ export class HomePage implements OnDestroy{
     console.log('Paid');
     this.afDB.object('/reservation/'+ key).update({paidStatus: true, payreceivedBy:this.adminObject.name});
     this.common.toastPop('#'+reservationID + ' has paid','bottom').present();
+    this.searchedId='';
   }
 
   onInput(event){
     if(this.searchedId !== ''){
       // this.filteredArray= this.allReservation.filter(x=> x.reservationID.toString().startsWith(this.searchedId) !== -1);
-      this.filteredArray= this.reservationsArray.filter(x=> 
+      this.filteredArray2= this.filteredArray.filter(x=> 
         x.reservationID.toString().substring(0,this.searchedId.length)=== this.searchedId);
     }else{
-      this.filteredArray= this.reservationsArray;
+      this.filteredArray2= this.filteredArray;
     }
   
   }
