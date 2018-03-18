@@ -3,6 +3,9 @@ import { CommonProvider } from './../../providers/common';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Component, OnDestroy } from '@angular/core';
 import { NavController } from 'ionic-angular';
+declare var jquery:any;
+declare var $ :any;
+
 
 @Component({
   selector: 'page-home',
@@ -180,4 +183,30 @@ export class HomePage implements OnDestroy{
     this.adminSub.unsubscribe();
   }
 
+//   sendEmail(){
+    
+//     $.ajax(
+// 	{
+    
+//     url: "https://api.mailgun.net/v3/juel.mydomain.com",
+// 		type:"POST",
+// 		username: 'key-485ec952f8804bded980eaf0d2e0925a',
+//     password: '3999c535525dd12fd1f5ad60e36450f5-833f99c3-c0b33c79',
+//     dataType: 'json',
+// 		data:{
+// 			"html": `<h1>TITLE-HERE lololol</h1>`,
+// 			"subject":"Hello Ng Wei Sheng",
+// 			"from": "User<postmaster@juel.mydomain.com>",
+// 			"to": "weisheng_rules@hotmail.com"
+// 		},
+// 		success:function(a,b,c){
+// 			console.log( 'mail sent: ', b );
+// 		}.bind(this),
+// 		error:function( xhr, status, errText ){console.log( 'mail sent failed: ', xhr.responseText );}
+// 	})
+
+    
+  
+
+// }
 }

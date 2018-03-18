@@ -1,7 +1,9 @@
+import { CommonProvider } from './../../providers/common';
 import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Subscription } from 'rxjs/Subscription';
+import { Reservation } from '../../models/reservation.model';
 
 
 @IonicPage()
@@ -12,7 +14,7 @@ import { Subscription } from 'rxjs/Subscription';
 export class CourtlistPage implements OnDestroy{
 
   courtType: string;
-
+  reservationFinal: Reservation;
 
   isBadminton=false;
   isSquash=false;
@@ -69,12 +71,33 @@ export class CourtlistPage implements OnDestroy{
   takrawSub: Subscription;
   basketballSub: Subscription;
   footballSub: Subscription;
+  adminID;
+  adminEmail;
+  adminSub: Subscription;
+  adminObject;
   
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private afDB: AngularFireDatabase) {
+  constructor(private common:CommonProvider,public navCtrl: NavController, public navParams: NavParams, private afDB: AngularFireDatabase) {
     this.dateTime= this.navParams.get('dateTime');
     console.log(this.dateTime);
 
+
+    //get admin uid
+    this.adminID=this.common.getUser();
+    this.adminEmail= this.common.getUserEmail();
+    console.log(this.adminID);
+    let content = {
+      email: this.adminEmail
+    }
+    this.afDB.object('/admins/'+ this.adminID).update(content);
+
+    this.adminSub=this.afDB.object('/admins/'+ this.adminID).valueChanges()
+  .subscribe(
+    (adminName) => {
+      this.adminObject= adminName;
+      console.log(this.adminObject.name);
+    }
+  )
 
 
     //retreving the reservation with the submitted date and time
@@ -239,6 +262,119 @@ export class CourtlistPage implements OnDestroy{
     }
   }
 
+  onSelect(){
+    console.log(this.courtType);
+    console.log(this.courtName);
+    if(this.badmintonRecentStatus === true){
+      this.fee= 5;
+    }else if(this.squashRecentStatus === true){
+      this.fee=3;
+    }else if(this.takrawRecentStatus === true){
+      this.fee=4;
+    }else if(this.basketballRecentStatus === true){
+      this.fee=7;
+    }else if(this.footballRecentStatus === true){
+      this.fee=10;
+    }
+    // const reservationRef= this.afDB.list('reservation');
+    // reservationRef.push(this.reservationFinal);
+    // this.navCtrl.push(ReserveDetailsPage,{courtType: this.courtType, courtName: this.courtName, dateTime: this.dateTime, fee: this.fee, approvedStatus: false, reservationKey: this.categoryKey, userName: this.userObject.name});
+    let randomID= Math.floor(Math.random() * 10000000000);
+    this.reservationFinal=new Reservation(this.dateTime.date, this.dateTime.time, this.courtType, this.courtName, this.fee,true, true,'Admin',this.categoryKey,randomID, this.adminObject.name);
+    const reservationRefForPush$= this.afDB.list('reservation');
+    reservationRefForPush$.push(this.reservationFinal);
+
+    
+  }
+
+
+  onSelectCourt(courtName:string, bookedStatus){
+    this.courtName=courtName;
+    
+    if(bookedStatus==true){
+      this.badmintonRecentStatus= false;
+      this.squashRecentStatus= false;
+      this.takrawRecentStatus= false;
+      this.basketballRecentStatus= false;
+      this.footballRecentStatus= false;
+
+      // console.log('badminton: ',this.badmintonRecentStatus);
+      //   console.log('squash:',this.squashRecentStatus);
+    }else{
+      // console.log(this.courtName);
+      // console.log(this.courtType);
+      if(this.courtType=== 'badminton'){
+        this.badmintonRecentStatus= true;
+        if(this.squashRecentStatus == true){
+          this.squashRecentStatus= false;
+        }else if(this.takrawRecentStatus == true){
+          this.takrawRecentStatus= false;
+        }else if(this.basketballRecentStatus == true){
+          this.basketballRecentStatus= false;
+        }else if(this.footballRecentStatus == true){
+          this.footballRecentStatus= false;
+        }
+        // console.log('badminton: ',this.badmintonRecentStatus);
+        // console.log('squash:',this.squashRecentStatus);
+      }else if(this.courtType === 'squash'){
+        this.squashRecentStatus= true;
+        if(this.badmintonRecentStatus == true){
+          this.badmintonRecentStatus= false;
+        }else if(this.takrawRecentStatus == true){
+          this.takrawRecentStatus= false;
+        }else if(this.basketballRecentStatus == true){
+          this.basketballRecentStatus= false;
+        }else if(this.footballRecentStatus == true){
+          this.footballRecentStatus= false;
+        }
+
+
+      }else if(this.courtType === 'takraw'){
+        this.takrawRecentStatus= true;
+        if(this.badmintonRecentStatus == true){
+          this.badmintonRecentStatus= false;
+        }else if(this.squashRecentStatus == true){
+          this.squashRecentStatus= false;
+        }else if(this.basketballRecentStatus == true){
+          this.basketballRecentStatus= false;
+        }else if(this.footballRecentStatus == true){
+          this.footballRecentStatus= false;
+        }
+      }
+      
+      
+      else if(this.courtType === 'basketball'){
+        this.basketballRecentStatus= true;
+        if(this.badmintonRecentStatus == true){
+          this.badmintonRecentStatus= false;
+        }else if(this.takrawRecentStatus == true){
+          this.takrawRecentStatus= false;
+        }else if(this.squashRecentStatus == true){
+          this.squashRecentStatus= false;
+        }else if(this.footballRecentStatus == true){
+          this.footballRecentStatus= false;
+        }
+      }
+      
+      
+      else if(this.courtType === 'football'){
+        this.footballRecentStatus= true;
+        if(this.badmintonRecentStatus == true){
+          this.badmintonRecentStatus= false;
+        }else if(this.takrawRecentStatus == true){
+          this.takrawRecentStatus= false;
+        }else if(this.basketballRecentStatus == true){
+          this.basketballRecentStatus= false;
+        }else if(this.squashRecentStatus == true){
+          this.squashRecentStatus= false;
+        }
+      }
+    }
+    
+
+    
+  }
+
 
   ngOnDestroy(){
     this.badmintonSub.unsubscribe();
@@ -247,6 +383,7 @@ export class CourtlistPage implements OnDestroy{
     this.takrawSub.unsubscribe();
     this.basketballSub.unsubscribe();
     this.footballSub.unsubscribe();
+    this.adminSub.unsubscribe();
   }
 
 }
