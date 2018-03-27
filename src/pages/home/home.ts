@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { CommonProvider } from './../../providers/common';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Component, OnDestroy } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 declare var jquery:any;
 declare var $ :any;
 
@@ -25,6 +25,7 @@ export class HomePage implements OnDestroy{
   courtName:string;
   loading;
   searchedId:string;
+  rejectReason: string;
 
 
   segment: string;
@@ -37,7 +38,8 @@ export class HomePage implements OnDestroy{
 
 
 
-  constructor(public navCtrl: NavController, private afDB: AngularFireDatabase, private common: CommonProvider) {
+  constructor(public navCtrl: NavController, private afDB: AngularFireDatabase, private common: CommonProvider,
+              private alertCtrl: AlertController) {
 
     this.segment="pending";
     
@@ -73,7 +75,7 @@ export class HomePage implements OnDestroy{
     this.reservationSub=this.reservationObservable.subscribe(
       (reservationStuff) =>{
         this.reservationsArray= reservationStuff;
-        this.filteredArray=this.reservationsArray.filter(x => x.approvedStatus === false || x.paidStatus === false);
+        this.filteredArray=this.reservationsArray.filter(x => (x.approvedStatus === false || x.paidStatus === false) && x.rejectedStatus=== undefined);
         this.filteredArray2=this.filteredArray;
         this.loading.dismiss();
         
@@ -155,8 +157,33 @@ export class HomePage implements OnDestroy{
 
   onReject(key: string, reservationID: number){
     console.log('rejected');
-    this.afDB.object('/reservation/'+ key).remove();
-    this.common.toastPop('Rejected request #'+ reservationID,'bottom').present();
+    this.alertCtrl.create({
+      title: 'What is the reason?',
+      inputs: [
+        {
+          name: 'reason',
+          placeholder: 'Reason'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role:'cancel'
+
+        },
+        {
+          text: 'Confirm',
+          handler: data => {
+            this.rejectReason= data.reason;
+            this.afDB.object('/reservation/'+ key).update({rejectedStatus: true, rejectedBy: this.adminObject.name, rejectedReason:this.rejectReason});
+            this.common.toastPop('Rejected request #'+ reservationID,'bottom').present();
+          }
+        }
+      ]
+      
+    }).present();
+    // this.afDB.object('/reservation/'+ key).remove();
+    
   }
 
 

@@ -20,14 +20,16 @@
       <p>Fees: RM {{ reservationDetails.fee }}</p>
       <p *ngIf="reservationDetails.approvedBy"><strong>Approved by: {{ reservationDetails.approvedBy }}</strong></p>
       <p *ngIf="reservationDetails.payreceivedBy"><strong>Payment received: {{ reservationDetails.payreceivedBy }}</strong></p>
-
-
+      <p *ngIf="reservationDetails.rejectedBy"><strong>Rejected By: {{ reservationDetails.rejectedBy }}</strong></p>
+      
+      <p *ngIf="reservationDetails.rejectedReason"><strong>Reason: {{ reservationDetails.rejectedReason }}</strong></p>
+      
       <ion-badge *ngIf="reservationDetails.approvedStatus" block>Approved</ion-badge>
-      <ion-badge color="danger" *ngIf="!reservationDetails.approvedStatus" block>Not Approved</ion-badge>
+      <ion-badge color="danger" *ngIf="!reservationDetails.approvedStatus && !reservationDetails.rejectedStatus" block>Not Approved</ion-badge>
 
         <ion-badge *ngIf="reservationDetails.paidStatus" block>Paid</ion-badge>
-        <ion-badge *ngIf="!reservationDetails.paidStatus" color="danger" block>Not Paid</ion-badge>        
-
+        <ion-badge *ngIf="!reservationDetails.paidStatus && !reservationDetails.rejectedStatus" color="danger" block>Not Paid</ion-badge>        
+        <ion-badge color="danger" *ngIf="reservationDetails.rejectedStatus" block>Rejected</ion-badge>
       
 
 <div>
