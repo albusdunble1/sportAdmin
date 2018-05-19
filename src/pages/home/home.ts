@@ -175,8 +175,13 @@ export class HomePage implements OnDestroy{
           text: 'Confirm',
           handler: data => {
             this.rejectReason= data.reason;
-            this.afDB.object('/reservation/'+ key).update({rejectedStatus: true, rejectedBy: this.adminObject.name, rejectedReason:this.rejectReason});
+            if(this.rejectReason != ""){
+              this.afDB.object('/reservation/'+ key).update({rejectedStatus: true, rejectedBy: this.adminObject.name, rejectedReason:this.rejectReason});
             this.common.toastPop('Rejected request #'+ reservationID,'bottom').present();
+            }else{
+              this.common.toastPop('Please state your reason!','bottom').present();
+            }
+            
           }
         }
       ]

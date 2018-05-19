@@ -49,6 +49,7 @@ export class CourtDatePage implements OnInit, OnDestroy{
   categorySub: Subscription;
   reservationSub: Subscription;
   reservationTimeSub: Subscription;
+  viewDisabled=true;
  
 
   reservationTimes =["1pm-2pm", "2pm-3pm", "3pm-4pm", "4pm-5pm", "5pm-6pm"];
@@ -113,6 +114,11 @@ export class CourtDatePage implements OnInit, OnDestroy{
   }
   
 
+  onDateChange(){
+    this.viewDisabled = false;
+  }
+
+
   private initializeForm(){
     this.timeForm= new FormGroup({
       'time': new FormControl('1pm-2pm', Validators.required)
@@ -166,7 +172,39 @@ export class CourtDatePage implements OnInit, OnDestroy{
          }
        )
 
-       this.querySubscription=this.reservationQuery.subscribe(      ///problemmmmm (solved for now)
+//TESTING PROMISE(ORIGINAL CODE)
+
+      //  this.querySubscription=this.reservationQuery.subscribe(      ///problemmmmm (solved for now)
+      //   (data) => {
+      //     this.reservationComparisonArray= data;
+      //     // console.log(this.reservationComparisonArray);
+
+      //     let counter =0;
+      //     this.reservationComparisonArray.forEach(
+      //       (check) => {
+      //           if(check.key == this.dateTime.date){
+      //             counter++;
+      //           }
+      //         }
+      //     )
+      //     if(counter> 0){
+      //       // console.log('found');
+            
+      //     }else{
+      //       this.reservationTimeRef$.push({category: this.categoryArray});
+            
+      //     }
+      //   }
+      // )
+       
+      // this.navCtrl.push(CourtlistPage, {dateTime:this.dateTime});
+
+ //TESTING PROMISE(ORIGINAL CODE)
+
+
+    let testPromise = new Promise(
+      (resolve) =>{
+         this.querySubscription=this.reservationQuery.subscribe(      ///problemmmmm (solved for now)
         (data) => {
           this.reservationComparisonArray= data;
           // console.log(this.reservationComparisonArray);
@@ -181,16 +219,30 @@ export class CourtDatePage implements OnInit, OnDestroy{
           )
           if(counter> 0){
             // console.log('found');
+            resolve("something lol");
             
           }else{
             this.reservationTimeRef$.push({category: this.categoryArray});
+            resolve("something lol");
             
           }
         }
       )
-       
-      this.navCtrl.push(CourtlistPage, {dateTime:this.dateTime});
-     
+
+      
+      }
+    )
+
+    testPromise.then(
+      (data) => {
+        console.log(data);
+        this.navCtrl.push(CourtlistPage, {dateTime:this.dateTime});
+      }
+    )
+
+
+
+
       // this.reservationFilteredArray= this.reservationComparisonArray.filter(
       //    (data) => {
       //      data.key == this.dateTime.date;

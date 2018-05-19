@@ -16,16 +16,16 @@
     <ion-list>
       <ion-item>
         <ion-label floating>Title</ion-label>
-        <ion-input ngModel type="text" name="title"></ion-input>
+        <ion-input ngModel type="text" name="title" required></ion-input>
       </ion-item>
 
       <ion-item>
           <ion-label floating>Description</ion-label>
-          <ion-textarea ngModel type="text" name="description"></ion-textarea>
+          <ion-textarea ngModel type="text" name="description" required></ion-textarea>
         </ion-item>
     </ion-list>
 
-    <button type="submit" ion-button color="primary" block outline>Post</button>
+    <button type="submit" ion-button color="primary" block outline [disabled]="f.invalid">Post</button>
   </form>
   <br><br>
   

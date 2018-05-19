@@ -24,7 +24,7 @@
             Date:
         </ion-label>
         
-        <ion-datetime displayFormat="MM/DD/YYYY" [min]="minDate" [max]="maxDate" [(ngModel)]="myDate" class="date" ion-content></ion-datetime>
+        <ion-datetime displayFormat="MM/DD/YYYY" [min]="minDate" [max]="maxDate" [(ngModel)]="myDate" class="date" ion-content placeholder="Select date" (ionChange)="onDateChange()"></ion-datetime>
     </ion-item>
    </ion-list>
    
@@ -49,7 +49,7 @@
 
   <ion-footer no-shadow padding no-border>
       <form [formGroup]="timeForm" (ngSubmit)="onSubmit()">
-      <button ion-button block color="primary" type="submit">View</button>
+      <button ion-button block color="primary" type="submit" [disabled]="viewDisabled">View</button>
     </form>
     </ion-footer>
     
